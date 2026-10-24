@@ -94,3 +94,7 @@ This repository has no license. Because it is built on greeds's code, please do 
 ## Changelog
 
 - **v2.2 (2026-10-23, English edition):** First release of the English edition, based on the Japanese v2.2. English names throughout, and weapon skill sets assigned inside `PUP_gear.lua`. The Japanese edition's automatic weapon skill for your own character is not included.
+
+## Feedback
+
+A one-line "it works" is welcome too. With a GitHub account you can post from [Issues](../../issues/new/choose).
