@@ -7,9 +7,6 @@ function get_sets()
     mote_include_version = 2
     include('Mote-Include.lua')
     set_language('english')
-
-    -- Load the gear definitions
-    include('PUP_gear.lua')
 end
 
 function job_setup()
@@ -30,9 +27,6 @@ function job_setup()
             base_self_command(cmdParams, eventArgs)
         end
     end
-
-    -- Initialize the gear sets (PUP_gear.lua)
-    if init_gear_sets then init_gear_sets() end
 end
 
 -------------------------------------------------------------------
@@ -82,6 +76,16 @@ local function pet_set(name)
     return sets.midcast and sets.midcast.Pet and sets.midcast.Pet[name]
 end
 
+-- Return a copy of the automaton WS set without main when Kenkonken is equipped so Aftermath is not lost
+local function ws_set_for_main(set)
+    if not set or not player or not player.equipment or player.equipment.main ~= "Kenkonken" then return set end
+    local copy = {}
+    for slot, item in pairs(set) do
+        if slot ~= 'main' then copy[slot] = item end
+    end
+    return copy
+end
+
 -- Put on automaton gear. Does nothing if the set does not exist
 local function wear_pet_gear(mode, set, now)
     pet_gear = mode
@@ -119,7 +123,7 @@ function job_pet_midcast(spell, action, spellMap, eventArgs)
     -- Automaton weapon skills (moves that have skillchain properties)
     elseif spell.skillchain_a then
         pet_gear = 'ws'
-        local set = pet_set(spell.english) or pet_set('WeaponSkill')
+        local set = ws_set_for_main(pet_set(spell.english) or pet_set('WeaponSkill'))
         if set then
             equip(set)
             eventArgs.handled = true
@@ -133,6 +137,16 @@ end
 function job_pet_aftercast(spell, action, spellMap, eventArgs)
     pet_gear = nil
     pet_gear_since = 0
+end
+
+-------------------------------------------------------------------
+-- After your own action finishes (clear ws marker so next pup_tick re-equips if needed)
+-------------------------------------------------------------------
+function job_post_aftercast(spell, action, spellMap, eventArgs)
+    if pet_gear == 'ws' and not pet_midaction() and not (eventArgs and eventArgs.handled) then
+        pet_gear = nil
+        pet_gear_since = 0
+    end
 end
 
 -------------------------------------------------------------------
@@ -178,7 +192,7 @@ local function update_pet_gear(now)
     elseif want == 'flashbulb' then
         wear_pet_gear('flashbulb', pet_set('Flashbulb'), now)
     elseif want == 'ws' then
-        wear_pet_gear('ws', pet_set('WeaponSkill'), now)
+        wear_pet_gear('ws', ws_set_for_main(pet_set('WeaponSkill')), now)
     else
         restore_gear()
     end

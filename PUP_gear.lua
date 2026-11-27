@@ -72,23 +72,6 @@ function init_gear_sets()
     back="Moonbeam Cape",
     }
 
-    sets.idle.cut = {
-    range="Animator P +1",
-    ammo="Automat. Oil +3",
-    head={ name="Rao Kabuto +1", augments={'Pet: HP+125','Pet: Accuracy+20','Pet: Damage taken -4%',}},
-    body="Foire Tobe +3",
-    hands={ name="Rao Kote +1", augments={'Pet: HP+125','Pet: Accuracy+20','Pet: Damage taken -4%',}},
-    legs={ name="Rao Haidate +1", augments={'Pet: HP+125','Pet: Accuracy+20','Pet: Damage taken -4%',}},
-    feet="Mpaca's Boots",
-    neck="Empath Necklace",
-    waist="Isa Belt",
-    left_ear="Rimeice Earring",
-    right_ear={ name="Kara. Earring +1", augments={'System: 1 ID: 1676 Val: 0','Accuracy+15','Mag. Acc.+15','"Store TP"+5',}},
-    left_ring="Overbearing Ring",
-    right_ring="Shneddick Ring",
-    back={ name="Visucius's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+20 /Mag. Eva.+20','Pet: Accuracy+10 Pet: Rng. Acc.+10','Pet: "Regen"+10','Pet: "Regen"+5',}},
-    }
-
     -- Engaged
     sets.engaged = {
 --    range="Animator P +1",
